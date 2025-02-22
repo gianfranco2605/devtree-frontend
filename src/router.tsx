@@ -4,9 +4,11 @@ import RegisterView from './views/RegisterView';
 import AuthLayout from './layouts/AuthLayout';
 import AppLayout from './layouts/AppLayout';
 import { LinkTreeView } from './views/LinkTreeView';
-import { ProfileView } from './views/ProfileView';
+import ProfileView from './views/ProfileView';
+
 export default function Router() {
   return (
+
     <BrowserRouter>
       <Routes>
         <Route element={< AuthLayout /> }>
@@ -20,5 +22,6 @@ export default function Router() {
         </Route>
       </Routes>
     </BrowserRouter>
+    
   );
 }
