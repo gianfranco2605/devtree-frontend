@@ -6,9 +6,26 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // Force all imports of React and ReactDOM to resolve to your local node_modules
       react: path.resolve(__dirname, 'node_modules/react'),
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
+  build: {
+    rollupOptions: {
+      external: [
+        '@mapbox/node-pre-gyp',
+        'mock-aws-s3',
+        'aws-sdk',
+        'nock'
+      ]
+    }
+  },
+  optimizeDeps: {
+    exclude: [
+      'mock-aws-s3',
+      'aws-sdk',
+      'nock',
+      '@mapbox/node-pre-gyp'
+    ]
+  }
 })
