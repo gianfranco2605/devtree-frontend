@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { social } from '../data/socials';
 import DevTreeInput from '../components/DevTreeInput';
 import { validUrl } from '../utils';
@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateProfile } from '../api/DevTreeAPI';
 import { User } from '../types';
+import { SocialNetwork } from '../types/index';
 
 export const LinkTreeView = () => {
   
@@ -14,7 +15,7 @@ export const LinkTreeView = () => {
   const queryClient = useQueryClient();
 
   const user: User = queryClient.getQueryData(['user'])!;
-  
+    
   const { mutate } = useMutation({
 
     mutationFn: updateProfile,
@@ -27,11 +28,30 @@ export const LinkTreeView = () => {
     }
   })
 
+  useEffect(() => {
+    const updateData = devTreeLinks.map(item => {
+      const userlink = JSON.parse(user.links).find((link: SocialNetwork) => link.name === item.name);
+      if(userlink) {
+        return {...item, url: userlink.url, enabled: userlink.enabled}
+      }
+      return item;
+    })
+    setDevTreeLinks(updateData);
+
+  },[])
+
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     const updatedLinks = devTreeLinks.map(link => link.name === e.target.name ? { ...link, url: e.target.value } : link)
 
     setDevTreeLinks(updatedLinks);
+
+    queryClient.setQueryData(['user'], (prevData: User) => {
+      return {
+        ...prevData,
+        links: JSON.stringify(updatedLinks)
+      }
+    })
 
   }
 

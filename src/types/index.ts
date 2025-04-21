@@ -7,6 +7,7 @@ export type User = {
     _id: string
     description: string
     image: string
+    links: string
 
 }
 
