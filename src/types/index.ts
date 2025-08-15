@@ -11,6 +11,8 @@ export type User = {
 
 }
 
+export type UserHandler = Pick<User, 'handle' | 'name' | 'image' | 'description' | 'links'>
+
 export type RegisterForm = Pick<User, 'handle' | 'email' | 'name'> & {
 
     password: string,
