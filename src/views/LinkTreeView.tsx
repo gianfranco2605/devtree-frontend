@@ -107,7 +107,7 @@ export const LinkTreeView = () => {
             id: 0,
             enabled: false
           }
-        } else if (link.id > indexToUpdate) {
+        } else if (link.id > indexToUpdate && (indexToUpdate !== 0 && link.id === 1) ) {
           return {
             ...link,
             id: link.id - 1
@@ -117,8 +117,6 @@ export const LinkTreeView = () => {
           return link;
         }
       })
-
-      console.log(indexToUpdate);
 
     }
 
@@ -146,7 +144,7 @@ export const LinkTreeView = () => {
 
         <button
           className='bg-cyan-400 p-2 test-lg w-full uppercase text-slate-600 rounded font-bold'
-          onClick={() => mutate(user)}
+          onClick={() => mutate(queryClient.getQueryData(['user'])!)}
         >Save Changes</button>
       </div>
     </>
