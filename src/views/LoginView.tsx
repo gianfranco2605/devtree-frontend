@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../components/ErrorMessage";
 import { LoginForm } from "../types";
@@ -8,6 +8,8 @@ import { isAxiosError } from "axios";
 
 export default function LoginView() {
 
+    const navigate = useNavigate();
+    
     const initialValues: LoginForm = {
         email: '',
         password: ''
@@ -23,6 +25,8 @@ export default function LoginView() {
 
             localStorage.setItem('AUTH_TOKEN', data)
 
+            navigate('/admin')
+
           } catch (error) {
             if(isAxiosError(error) && error.response ){
       
@@ -37,7 +41,7 @@ export default function LoginView() {
     return (
         <>
 
-            <h1 className="text-4xl text-white font-bold" >Inciar Sesion</h1>
+            <h1 className="text-4xl text-white font-bold" >Iniciar Sesion</h1>
 
             <form
                 onSubmit={handleSubmit(handleLogin)}

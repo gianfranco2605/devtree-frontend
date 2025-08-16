@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import {Toaster} from 'sonner';
+import { Logo } from "../components/Logo";
 
 export default function AuthLayout() {
     return (
@@ -8,7 +9,7 @@ export default function AuthLayout() {
 
                 <div className="max-w-lg mx-auto pt-10 px-5" >
 
-                    <img src="/logo.svg" alt="Logo Devtree" />
+                    <Logo />
 
                     <div className="py-10" >
                         <Outlet />

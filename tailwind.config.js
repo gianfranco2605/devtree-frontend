@@ -5,10 +5,17 @@ export default {
     "./src/**/*.{js,ts,tsx,jsx}",
   ],
   theme: {
-    extend: {},
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
-}
+    extend: {
+      backgroundImage: {
+        "home": "url('/bg.svg')"
+      },
+      backgroundSize: {
+        "home-xl": "50%"
+      },
+    },
+    plugins: [
+      require('@tailwindcss/forms'),
+    ],
+  }
 
+}

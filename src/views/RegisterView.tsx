@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { isAxiosError } from 'axios';
 import { toast } from 'sonner';
@@ -8,39 +8,42 @@ import { api } from "../config/axios";
 
 export default function RegisterView(): React.ReactNode {
 
+  const { state } = useLocation();
+  const navigate = useNavigate()
   const initialValues: RegisterForm = {
     name: '',
     email: '',
-    handle: '',
+    handle: state?.handle ?? '',  // defaults to empty string
     password: '',
     password_confirmation: ''
   }
 
-  const { register, watch, reset, handleSubmit, formState: { errors } } = useForm({defaultValues: initialValues});
+  const { register, watch, reset, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues });
 
   const password = watch('password');
-  
+
   const handleRegister = async (formData: RegisterForm) => {
 
     try {
 
-      const {data} = await api.post(`/auth/register`, formData);
-      console.log(data);
+      const { data } = await api.post(`/auth/register`, formData);
 
       toast.success(data);
 
       reset();
-      
+
+      navigate('/auth/login');
+
     } catch (error) {
-      if(isAxiosError(error) && error.response ){
+      if (isAxiosError(error) && error.response) {
 
         toast.error(error.response.data)
         console.log(error.response.data);
 
       }
-            
+
     }
-    
+
   }
 
   return (
@@ -61,8 +64,8 @@ export default function RegisterView(): React.ReactNode {
             {...register('name', {
               required: "El nombre es obligatorio"
             })}
-        />
-        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+          />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="email" className="text-2xl text-slate-500">E-mail</label>
@@ -76,10 +79,10 @@ export default function RegisterView(): React.ReactNode {
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "E-mail no válido",
-            },
+              },
             })}
-        />
-        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+          />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="handle" className="text-2xl text-slate-500">Handle</label>
@@ -91,8 +94,8 @@ export default function RegisterView(): React.ReactNode {
             {...register('handle', {
               required: "El handle es obligatorio"
             })}
-        />
-        {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
+          />
+          {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
 
         </div>
         <div className="grid grid-cols-1 space-y-3">
@@ -109,8 +112,8 @@ export default function RegisterView(): React.ReactNode {
                 message: 'El password deve ser minimo 6 caracteres'
               }
             })}
-        />
-        {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+          />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </div>
 
         <div className="grid grid-cols-1 space-y-3">
@@ -125,7 +128,7 @@ export default function RegisterView(): React.ReactNode {
               validate: (value) => value === password || 'Los password no son iguales'
             })}
           />
-        {errors.password_confirmation && <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>}
+          {errors.password_confirmation && <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>}
         </div>
 
         <input

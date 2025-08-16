@@ -9,7 +9,7 @@ export default function AppLayout() {
 
         queryFn: getUser,
         queryKey: [ 'user' ],
-        retry: 1,
+        retry: 2,
         refetchOnWindowFocus: false
     });
 
